@@ -7,57 +7,61 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root {
-  --bg: #0e0f0e;
-  --surface: #161817;
-  --surface2: #1e201e;
-  --border: rgba(255,255,255,0.09);
-  --border2: rgba(255,255,255,0.18);
-  --accent: #b5f23a;
-  --accent-dim: rgba(181,242,58,0.12);
-  --text: #f0f2ee;
-  --text2: #8a9088;
-  --text3: #4e524d;
-  --win-bg: rgba(181,242,58,0.13);
-  --win: #b5f23a;
-  --loss-bg: rgba(255,80,80,0.12);
-  --loss: #ff7070;
-  --r: 10px;
-  --rlg: 14px;
+  --bg: #0e0f0e; --surface: #161817; --surface2: #1e201e;
+  --border: rgba(255,255,255,0.09); --accent: #b5f23a;
+  --accent-dim: rgba(181,242,58,0.12); --text: #f0f2ee;
+  --text2: #8a9088; --text3: #4e524d;
+  --win-bg: rgba(181,242,58,0.13); --win: #b5f23a;
+  --loss-bg: rgba(255,80,80,0.12); --loss: #ff7070;
+  --r: 10px; --rlg: 14px;
 }
-html, body {
-  background: var(--bg);
-  color: var(--text);
+html,body {
+  background: var(--bg); color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  min-height: 100vh;
-  padding-bottom: 80px;
-  font-size: 15px;
-  line-height: 1.4;
+  min-height: 100vh; padding-bottom: 80px; font-size: 15px; line-height: 1.4;
 }
-
-/* HEADER */
 .hdr {
   position: sticky; top: 0; z-index: 99;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
 }
 .hdr-left { display: flex; align-items: center; gap: 10px; }
 .hdr-logo { width: 34px; height: 34px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-.hdr h1 { font-size: 15px; font-weight: 700; color: var(--text); }
+.hdr h1 { font-size: 15px; font-weight: 700; }
 .hdr p  { font-size: 11px; color: var(--text2); margin-top: 1px; }
-.hdr-time { font-size: 11px; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(181,242,58,0.25); padding: 5px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.hdr-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.hdr-time { font-size: 11px; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(181,242,58,0.25); padding: 5px 10px; border-radius: 20px; white-space: nowrap; }
+.sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text3); flex-shrink: 0; transition: background 0.3s; }
+.sync-dot.ok  { background: var(--win); }
+.sync-dot.err { background: var(--loss); }
 
-/* MAIN */
+/* SETUP BANNER */
+.setup-banner {
+  background: #1a1500; border: 1px solid rgba(255,200,0,0.3);
+  border-radius: var(--rlg); padding: 16px; margin-bottom: 16px;
+}
+.setup-banner h3 { font-size: 14px; font-weight: 700; color: #ffd700; margin-bottom: 6px; }
+.setup-banner p  { font-size: 12px; color: var(--text2); line-height: 1.6; }
+.setup-banner code { background: var(--surface2); padding: 1px 5px; border-radius: 4px; font-size: 11px; color: var(--accent); }
+.cfg-form { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.cfg-inp {
+  width: 100%; padding: 9px 12px; background: var(--surface2);
+  border: 1px solid var(--border); border-radius: var(--r);
+  color: var(--text); font-size: 12px; font-family: inherit; outline: none;
+}
+.cfg-inp:focus { border-color: rgba(181,242,58,0.4); }
+.cfg-btn {
+  padding: 10px; background: var(--accent); color: #0e0f0e;
+  border: none; border-radius: var(--r); font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+}
+
 .main { padding: 14px 14px 0; max-width: 600px; margin: 0 auto; }
-
-/* STATS STRIP */
 .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 16px; }
 .stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 10px 6px; text-align: center; }
 .stat-v { font-size: 20px; font-weight: 700; color: var(--accent); }
 .stat-l { font-size: 10px; color: var(--text2); margin-top: 1px; }
 
-/* BOTTOM NAV */
 .bnav {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
   background: var(--surface); border-top: 1px solid var(--border);
@@ -66,21 +70,17 @@ html, body {
 .bnav-btn {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
   padding: 8px 4px 10px; border: none; background: transparent;
-  font-size: 10px; font-weight: 600; color: var(--text3); cursor: pointer;
-  font-family: inherit;
+  font-size: 10px; font-weight: 600; color: var(--text3); cursor: pointer; font-family: inherit;
 }
 .bnav-btn .ico { font-size: 22px; line-height: 1; }
 .bnav-btn.on { color: var(--accent); }
 
-/* VIEWS */
 .view { display: none; }
 .view.on { display: block; }
 
-/* ── SCORE ENTRY ── */
 .team-scroll {
   display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px;
-  margin-bottom: 14px; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
 }
 .team-scroll::-webkit-scrollbar { display: none; }
 .tbtn {
@@ -97,13 +97,9 @@ html, body {
 .card-hdr h2 { font-size: 15px; font-weight: 700; }
 .card-hdr p  { font-size: 11px; color: var(--text2); margin-top: 1px; }
 
-/* Each game row */
 .grow {
-  display: grid;
-  grid-template-columns: 38px 1fr 36px 58px;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 14px;
+  display: grid; grid-template-columns: 38px 1fr 36px 58px;
+  align-items: center; gap: 8px; padding: 11px 14px;
   border-bottom: 1px solid var(--border);
 }
 .grow:last-child { border-bottom: none; }
@@ -113,24 +109,22 @@ html, body {
 .rbadge-res { font-size: 11px; font-weight: 700; padding: 3px 6px; border-radius: 5px; background: var(--surface2); color: var(--text3); text-align: center; display: block; }
 .rbadge-res.win  { background: var(--win-bg); color: var(--win); }
 .rbadge-res.loss { background: var(--loss-bg); color: var(--loss); }
-
 .pts-inp {
-  width: 100%; height: 42px; font-size: 18px; font-weight: 700;
-  text-align: center; background: var(--surface2);
-  border: 1.5px solid var(--border); border-radius: var(--r);
-  color: var(--text); outline: none; font-family: inherit;
+  width: 100%; height: 42px; font-size: 18px; font-weight: 700; text-align: center;
+  background: var(--surface2); border: 1.5px solid var(--border);
+  border-radius: var(--r); color: var(--text); outline: none; font-family: inherit;
   -moz-appearance: textfield;
 }
 .pts-inp::-webkit-outer-spin-button,
 .pts-inp::-webkit-inner-spin-button { -webkit-appearance: none; }
 .pts-inp:focus { border-color: rgba(181,242,58,0.5); background: #111; }
+.pts-inp.saving { border-color: rgba(181,242,58,0.25); }
 
 .card-foot { padding: 12px 14px; border-top: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: space-between; }
 .foot-lbl { font-size: 13px; color: var(--text2); }
 .total-pts { font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1; }
 .total-sub { font-size: 10px; color: var(--text3); margin-top: 2px; text-align: right; }
 
-/* ── LEADERBOARD ── */
 .podium-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
 .pod { background: var(--surface); border: 1px solid var(--border); border-radius: var(--rlg); padding: 12px 8px; text-align: center; }
 .pod.p1 { border-color: rgba(181,242,58,0.3); }
@@ -140,7 +134,6 @@ html, body {
 .pod-pts  { font-size: 22px; font-weight: 700; margin-top: 6px; color: var(--text); }
 .pod.p1 .pod-pts { color: var(--accent); }
 .pod-lbl  { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .05em; }
-
 .lb-rows { display: flex; flex-direction: column; gap: 6px; }
 .lb-row { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 11px 14px; }
 .lb-row.p1 { border-color: rgba(181,242,58,0.25); }
@@ -155,7 +148,6 @@ html, body {
 .lbs-v.pts { color: var(--accent); font-size: 17px; }
 .lbs-l { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .04em; }
 
-/* ── SCHEDULE ── */
 .sch-list { display: flex; flex-direction: column; gap: 10px; }
 .sch-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--rlg); overflow: hidden; }
 .sch-hdr { display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; background: var(--surface2); border-bottom: 1px solid var(--border); }
@@ -167,10 +159,9 @@ html, body {
 .ct-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 7px; }
 .ct:first-child .ct-lbl { color: #5ca3e8; }
 .ct:last-child  .ct-lbl { color: #9dc43a; }
-.ct-team { margin-bottom: 2px; }
 .ct-team-name { font-size: 12px; font-weight: 600; }
-.ct-team-mem  { font-size: 10px; color: var(--text3); margin-top: 1px; }
-.ct-vs { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .05em; margin: 5px 0; }
+.ct-team-mem  { font-size: 10px; color: var(--text3); margin-top: 1px; margin-bottom: 6px; }
+.ct-vs { font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .05em; margin: 4px 0; }
 .ct-empty { font-size: 11px; color: var(--text3); padding-top: 4px; }
 .sch-rest { padding: 9px 12px; }
 .rest-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); margin-bottom: 7px; }
@@ -185,12 +176,12 @@ html, body {
 <div class="hdr">
   <div class="hdr-left">
     <div class="hdr-logo">🏓</div>
-    <div>
-      <h1>Pickleball Tournament</h1>
-      <p>7 teams · 2 courts · 11 rounds</p>
-    </div>
+    <div><h1>Pickleball Tournament</h1><p>7 teams · 2 courts · 11 rounds</p></div>
   </div>
-  <div class="hdr-time">6–8 PM</div>
+  <div class="hdr-right">
+    <div class="hdr-time">6–8 PM</div>
+    <div class="sync-dot" id="sync-dot" title="Sync status"></div>
+  </div>
 </div>
 
 <div class="main">
@@ -202,13 +193,28 @@ html, body {
   </div>
 
   <div class="view on" id="view-scores">
+    <!-- Firebase setup banner — hidden once configured -->
+    <div class="setup-banner" id="setup-banner">
+      <h3>⚡ One-time setup for live sync</h3>
+      <p>To sync scores across all devices, paste your Firebase config below.<br><br>
+        1. Go to <code>console.firebase.google.com</code><br>
+        2. Create a project → Add a web app<br>
+        3. Copy your <code>apiKey</code> and <code>projectId</code> from the config snippet<br>
+        4. Paste them here and tap Save
+      </p>
+      <div class="cfg-form">
+        <input class="cfg-inp" id="cfg-apikey"    placeholder="apiKey"    autocomplete="off" spellcheck="false"/>
+        <input class="cfg-inp" id="cfg-projectid" placeholder="projectId" autocomplete="off" spellcheck="false"/>
+        <button class="cfg-btn" onclick="saveConfig()">Save &amp; Connect</button>
+      </div>
+    </div>
     <div class="team-scroll" id="team-sel"></div>
     <div id="card-wrap"></div>
   </div>
 
   <div class="view" id="view-lb">
     <div class="podium-row" id="lb-pod"></div>
-    <div class="lb-rows" id="lb-rows"></div>
+    <div class="lb-rows"   id="lb-rows"></div>
   </div>
 
   <div class="view" id="view-sch">
@@ -217,21 +223,20 @@ html, body {
 </div>
 
 <nav class="bnav">
-  <button class="bnav-btn on" id="bn-scores" onclick="go('scores')">
-    <span class="ico">✏️</span><span>Scores</span>
-  </button>
-  <button class="bnav-btn" id="bn-lb" onclick="go('lb')">
-    <span class="ico">🏆</span><span>Standings</span>
-  </button>
-  <button class="bnav-btn" id="bn-sch" onclick="go('sch')">
-    <span class="ico">📋</span><span>Schedule</span>
-  </button>
+  <button class="bnav-btn on" id="bn-scores" onclick="go('scores')"><span class="ico">✏️</span><span>Scores</span></button>
+  <button class="bnav-btn"    id="bn-lb"     onclick="go('lb')"><span class="ico">🏆</span><span>Standings</span></button>
+  <button class="bnav-btn"    id="bn-sch"    onclick="go('sch')"><span class="ico">📋</span><span>Schedule</span></button>
 </nav>
 
-<script>
+<!-- Firebase SDKs (loaded from CDN — internet required for sync) -->
+<script type="module">
+import { initializeApp }                       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set }      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
 var T = {
-  A:{name:"Team A",mem:"AJ & Cheng",       av:"AC",bg:"rgba(56,138,221,.15)", tc:"#5ca3e8"},
-  B:{name:"Team B",mem:"Dex & YX",          av:"DY",bg:"rgba(181,242,58,.15)",tc:"#9dc43a"},
+  A:{name:"Team A",mem:"AJ & Cheng",        av:"AC",bg:"rgba(56,138,221,.15)", tc:"#5ca3e8"},
+  B:{name:"Team B",mem:"Dex & YX",           av:"DY",bg:"rgba(181,242,58,.15)",tc:"#9dc43a"},
   C:{name:"Team C",mem:"Uncle Ken & Wee Lee",av:"KW",bg:"rgba(200,130,255,.15)",tc:"#b87fff"},
   D:{name:"Team D",mem:"Vuili & May",        av:"VM",bg:"rgba(255,160,60,.15)", tc:"#ffaa3c"},
   E:{name:"Team E",mem:"Ervy & Wafiee",      av:"EW",bg:"rgba(255,80,120,.15)", tc:"#ff6090"},
@@ -253,10 +258,80 @@ var R = [
   {c1:["A","E"],c2:null,     rest:["B","C","D","F","G"]}
 ];
 
-var SC = {}; // scores
+// ── STATE ─────────────────────────────────────────────────────────────────────
+var SC = {};
 Object.keys(T).forEach(function(t){SC[t]={};});
 var active = "A";
+var db = null;
+var saveTimer = null;
 
+// ── FIREBASE SETUP ────────────────────────────────────────────────────────────
+function loadConfig() {
+  try { return JSON.parse(localStorage.getItem("pb_cfg")||"null"); } catch(e){ return null; }
+}
+
+function saveConfig() {
+  var apiKey    = document.getElementById("cfg-apikey").value.trim();
+  var projectId = document.getElementById("cfg-projectid").value.trim();
+  if (!apiKey || !projectId) { alert("Please enter both apiKey and projectId"); return; }
+  var cfg = {apiKey:apiKey, projectId:projectId};
+  localStorage.setItem("pb_cfg", JSON.stringify(cfg));
+  connectFirebase(cfg);
+}
+window.saveConfig = saveConfig;
+
+function connectFirebase(cfg) {
+  try {
+    var app = initializeApp({
+      apiKey:      cfg.apiKey,
+      authDomain:  cfg.projectId+".firebaseapp.com",
+      databaseURL: "https://"+cfg.projectId+"-default-rtdb.firebaseio.com",
+      projectId:   cfg.projectId,
+    });
+    db = getDatabase(app);
+    setSyncDot("ok");
+    document.getElementById("setup-banner").style.display = "none";
+
+    // Listen for any score changes from any device
+    onValue(ref(db,"scores"), function(snap) {
+      var data = snap.val();
+      if (data) {
+        Object.keys(T).forEach(function(tid){
+          if (data[tid]) {
+            Object.keys(data[tid]).forEach(function(rnd){
+              SC[tid][rnd] = data[tid][rnd];
+            });
+          }
+        });
+      }
+      renderCard();
+      if (document.getElementById("view-lb").classList.contains("on")) renderLB();
+    }, function(err) {
+      setSyncDot("err");
+      console.error(err);
+    });
+  } catch(e) {
+    setSyncDot("err");
+    alert("Connection failed. Check your apiKey and projectId and try again.");
+    console.error(e);
+  }
+}
+
+function setSyncDot(state) {
+  var d = document.getElementById("sync-dot");
+  d.className = "sync-dot " + state;
+  d.title = state === "ok" ? "Live sync active" : "Sync error";
+}
+
+function pushScores() {
+  if (!db) return;
+  setSyncDot("ok");
+  set(ref(db,"scores"), SC).catch(function(e){
+    setSyncDot("err"); console.error(e);
+  });
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
 function games(tid) {
   var g = [];
   R.forEach(function(r,i){
@@ -268,77 +343,81 @@ function games(tid) {
 
 function result(tid,rnd,opp) {
   var m=SC[tid][rnd], o=SC[opp][rnd];
-  if(m===undefined||m===""||o===undefined||o==="") return "";
+  if(m===undefined||m===""||m===null||o===undefined||o===""||o===null) return "";
+  m=parseInt(m); o=parseInt(o);
   return m>o?"W":m<o?"L":"D";
 }
 
 function stats(tid) {
-  var g=games(tid), pts=0, wins=0, played=0;
+  var g=games(tid),pts=0,wins=0,played=0;
   g.forEach(function(x){
     var s=SC[tid][x.rnd];
-    if(s!==undefined&&s!==""){pts+=parseInt(s);played++;}
+    if(s!==undefined&&s!==""&&s!==null){pts+=parseInt(s);played++;}
     if(result(tid,x.rnd,x.opp)==="W") wins++;
   });
   return {pts:pts,wins:wins,played:played};
 }
 
-function setScore(tid,rnd,val) {
+// ── SCORE ENTRY ───────────────────────────────────────────────────────────────
+window.setScore = function(tid,rnd,val) {
   var n=parseInt(val);
   SC[tid][rnd]=(isNaN(n)||val==="")?"":Math.min(15,Math.max(0,n));
+  // Update totals in place
   var st=stats(tid);
   var tp=document.querySelector(".total-pts");
   var ts=document.querySelector(".total-sub");
   if(tp) tp.textContent=st.pts;
   if(ts) ts.textContent=st.wins+" win"+(st.wins!==1?"s":"")+" \u00b7 "+st.played+"/6 entered";
-  var g=games(tid), gx=null;
-  for(var i=0;i<g.length;i++){if(g[i].rnd===rnd){gx=g[i];break;}}
+  // Update result badge in place
+  var gx=games(tid).filter(function(x){return x.rnd===rnd;})[0];
   var rel=document.getElementById("res-"+tid+"-"+rnd);
   if(rel&&gx){
     var res=result(tid,rnd,gx.opp);
     rel.textContent=res||"–";
     rel.className="rbadge-res"+(res==="W"?" win":res==="L"?" loss":"");
   }
-}
+  // Debounce push to Firebase
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(function(){ pushScores(); }, 800);
+};
 
-function go(v) {
+// ── VIEWS ─────────────────────────────────────────────────────────────────────
+window.go = function(v) {
   ["scores","lb","sch"].forEach(function(id){
     document.getElementById("view-"+id).className="view"+(id===v?" on":"");
     document.getElementById("bn-"+id).className="bnav-btn"+(id===v?" on":"");
   });
   if(v==="lb") renderLB();
-}
+};
+
+window.pick = function(tid) {
+  active=tid; buildSel(); renderCard();
+};
 
 function buildSel() {
   var html="";
   Object.keys(T).forEach(function(tid){
-    html+='<button class="tbtn'+(tid===active?" on":"") +'" onclick="pick(\''+tid+'\')">'+T[tid].name+'</button>';
+    html+='<button class="tbtn'+(tid===active?" on":"")+'" onclick="pick(\''+tid+'\')">'+T[tid].name+'</button>';
   });
   document.getElementById("team-sel").innerHTML=html;
 }
 
-function pick(tid) {
-  active=tid;
-  buildSel();
-  renderCard();
-}
-
 function renderCard() {
-  var tid=active, t=T[tid], g=games(tid), st=stats(tid);
+  var tid=active,t=T[tid],g=games(tid),st=stats(tid);
   var rows="";
   g.forEach(function(x){
     var res=result(tid,x.rnd,x.opp);
     var s=SC[tid][x.rnd];
-    var val=(s!==undefined&&s!=="")? s:"";
+    var val=(s!==undefined&&s!==""&&s!==null)?s:"";
     rows+='<div class="grow">'
       +'<span class="rbadge">R'+x.rnd+'</span>'
       +'<div><div class="opp-name">vs '+T[x.opp].name+'</div><div class="opp-mem">'+T[x.opp].mem+'</div></div>'
-      +'<span class="rbadge-res'+(res==="W"?" win":res==="L"?" loss":"") +'" id="res-'+tid+'-'+x.rnd+'">'+(res||"–")+'</span>'
+      +'<span class="rbadge-res'+(res==="W"?" win":res==="L"?" loss":"")+'" id="res-'+tid+'-'+x.rnd+'">'+(res||"–")+'</span>'
       +'<input class="pts-inp" type="number" inputmode="numeric" pattern="[0-9]*" min="0" max="15" placeholder="–" value="'+val+'"'
       +' oninput="setScore(\''+tid+'\','+x.rnd+',this.value)"'
       +' onblur="if(this.value>15)this.value=15;if(this.value<0&&this.value!=\'\')this.value=0;setScore(\''+tid+'\','+x.rnd+',this.value)"'
       +' onkeydown="if(event.key===\'Enter\')this.blur()"'
-      +'/>'
-      +'</div>';
+      +'/></div>';
   });
   document.getElementById("card-wrap").innerHTML=
     '<div class="card">'
@@ -352,11 +431,9 @@ function renderCard() {
 
 function renderLB() {
   var rows=Object.keys(T).map(function(tid){
-    var st=stats(tid); return {tid:tid,pts:st.pts,wins:st.wins,played:st.played};
+    var st=stats(tid);return{tid:tid,pts:st.pts,wins:st.wins,played:st.played};
   }).sort(function(a,b){return b.pts-a.pts||b.wins-a.wins;});
-
-  var medals=["🥇","🥈","🥉"];
-  var ph="";
+  var medals=["🥇","🥈","🥉"],ph="";
   rows.slice(0,3).forEach(function(r,i){
     var t=T[r.tid];
     ph+='<div class="pod'+(i===0?" p1":"")+'">'
@@ -364,11 +441,9 @@ function renderLB() {
       +'<div class="pod-name">'+t.name+'</div>'
       +'<div class="pod-mem">'+t.mem+'</div>'
       +'<div class="pod-pts">'+r.pts+'</div>'
-      +'<div class="pod-lbl">pts</div>'
-      +'</div>';
+      +'<div class="pod-lbl">pts</div></div>';
   });
   document.getElementById("lb-pod").innerHTML=ph;
-
   var lh="";
   rows.forEach(function(r,i){
     var t=T[r.tid];
@@ -386,25 +461,25 @@ function renderLB() {
 
 function buildSch() {
   var sm=18*60;
-  var fmt=function(m){return ("0"+Math.floor(m/60)).slice(-2)+":"+("0"+(m%60)).slice(-2);};
+  var fmt=function(m){return("0"+Math.floor(m/60)).slice(-2)+":"+("0"+(m%60)).slice(-2);};
   var html="";
   R.forEach(function(r,i){
     var t=sm+i*10;
     var c2h=r.c2
-      ?'<div class="ct-team"><div class="ct-team-name">'+T[r.c2[0]].name+'</div><div class="ct-team-mem">'+T[r.c2[0]].mem+'</div></div>'
+      ?'<div class="ct-team-name">'+T[r.c2[0]].name+'</div><div class="ct-team-mem">'+T[r.c2[0]].mem+'</div>'
        +'<div class="ct-vs">vs</div>'
-       +'<div class="ct-team"><div class="ct-team-name">'+T[r.c2[1]].name+'</div><div class="ct-team-mem">'+T[r.c2[1]].mem+'</div></div>'
+       +'<div class="ct-team-name">'+T[r.c2[1]].name+'</div><div class="ct-team-mem">'+T[r.c2[1]].mem+'</div>'
       :'<div class="ct-empty">Not in use</div>';
     var chips=r.rest.map(function(tid){
-      return '<div class="rchip"><div class="rchip-name">'+T[tid].name+'</div><div class="rchip-mem">'+T[tid].mem+'</div></div>';
+      return'<div class="rchip"><div class="rchip-name">'+T[tid].name+'</div><div class="rchip-mem">'+T[tid].mem+'</div></div>';
     }).join("");
     html+='<div class="sch-card">'
       +'<div class="sch-hdr"><span class="sch-rnd">Round '+(i+1)+'</span><span class="sch-time">'+fmt(t)+' – '+fmt(t+10)+'</span></div>'
       +'<div class="sch-courts">'
       +'<div class="ct"><div class="ct-lbl">Court 1</div>'
-      +'<div class="ct-team"><div class="ct-team-name">'+T[r.c1[0]].name+'</div><div class="ct-team-mem">'+T[r.c1[0]].mem+'</div></div>'
+      +'<div class="ct-team-name">'+T[r.c1[0]].name+'</div><div class="ct-team-mem">'+T[r.c1[0]].mem+'</div>'
       +'<div class="ct-vs">vs</div>'
-      +'<div class="ct-team"><div class="ct-team-name">'+T[r.c1[1]].name+'</div><div class="ct-team-mem">'+T[r.c1[1]].mem+'</div></div>'
+      +'<div class="ct-team-name">'+T[r.c1[1]].name+'</div><div class="ct-team-mem">'+T[r.c1[1]].mem+'</div>'
       +'</div>'
       +'<div class="ct"'+(r.c2?'':' style="opacity:.4"')+'><div class="ct-lbl">Court 2</div>'+c2h+'</div>'
       +'</div>'
@@ -414,9 +489,17 @@ function buildSch() {
   document.getElementById("sch-rows").innerHTML=html;
 }
 
+// ── INIT ──────────────────────────────────────────────────────────────────────
 buildSel();
 renderCard();
 buildSch();
+
+var cfg = loadConfig();
+if (cfg) {
+  document.getElementById("cfg-apikey").value    = cfg.apiKey;
+  document.getElementById("cfg-projectid").value = cfg.projectId;
+  connectFirebase(cfg);
+}
 </script>
 </body>
 </html>
