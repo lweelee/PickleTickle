@@ -31,30 +31,28 @@ html,body {
 .hdr p  { font-size: 11px; color: var(--text2); margin-top: 1px; }
 .hdr-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .hdr-time { font-size: 11px; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(181,242,58,0.25); padding: 5px 10px; border-radius: 20px; white-space: nowrap; }
-.sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text3); flex-shrink: 0; transition: background 0.3s; }
-.sync-dot.ok  { background: var(--win); }
-.sync-dot.err { background: var(--loss); }
+.sync-pill { font-size: 10px; font-weight: 700; padding: 4px 9px; border-radius: 20px; background: var(--surface2); color: var(--text3); border: 1px solid var(--border); white-space: nowrap; }
+.sync-pill.ok  { background: rgba(181,242,58,0.12); color: var(--win); border-color: rgba(181,242,58,0.3); }
+.sync-pill.err { background: rgba(255,80,80,0.12);  color: var(--loss); border-color: rgba(255,80,80,0.3); }
 
-/* SETUP BANNER */
-.setup-banner {
-  background: #1a1500; border: 1px solid rgba(255,200,0,0.3);
-  border-radius: var(--rlg); padding: 16px; margin-bottom: 16px;
-}
-.setup-banner h3 { font-size: 14px; font-weight: 700; color: #ffd700; margin-bottom: 6px; }
-.setup-banner p  { font-size: 12px; color: var(--text2); line-height: 1.6; }
-.setup-banner code { background: var(--surface2); padding: 1px 5px; border-radius: 4px; font-size: 11px; color: var(--accent); }
-.cfg-form { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
-.cfg-inp {
-  width: 100%; padding: 9px 12px; background: var(--surface2);
-  border: 1px solid var(--border); border-radius: var(--r);
-  color: var(--text); font-size: 12px; font-family: inherit; outline: none;
-}
-.cfg-inp:focus { border-color: rgba(181,242,58,0.4); }
-.cfg-btn {
-  padding: 10px; background: var(--accent); color: #0e0f0e;
-  border: none; border-radius: var(--r); font-size: 13px; font-weight: 700;
-  cursor: pointer; font-family: inherit;
-}
+/* SETUP MODAL */
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; display: flex; align-items: flex-end; justify-content: center; padding: 0; }
+.modal-bg.hidden { display: none; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px 20px 0 0; padding: 24px 20px 36px; width: 100%; max-width: 500px; }
+.modal h2 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.modal-sub { font-size: 13px; color: var(--text2); margin-bottom: 18px; line-height: 1.6; }
+.steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.step { background: var(--surface2); border-radius: var(--r); padding: 12px 14px; font-size: 12px; color: var(--text2); line-height: 1.7; }
+.step b { color: var(--text); }
+.step code { background: rgba(181,242,58,0.1); color: var(--accent); padding: 1px 5px; border-radius: 4px; font-size: 11px; }
+.inp-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.inp-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.cfg-inp { width: 100%; padding: 11px 13px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--r); color: var(--text); font-size: 13px; font-family: inherit; outline: none; }
+.cfg-inp:focus { border-color: rgba(181,242,58,0.45); }
+.cfg-btn { width: 100%; padding: 13px; background: var(--accent); color: #0e0f0e; border: none; border-radius: var(--r); font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.cfg-btn:active { opacity: .85; }
+.err-msg { font-size: 12px; color: var(--loss); margin-top: 8px; min-height: 18px; }
+.skip-btn { width: 100%; padding: 11px; background: transparent; color: var(--text3); border: 1px solid var(--border); border-radius: var(--r); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 8px; }
 
 .main { padding: 14px 14px 0; max-width: 600px; margin: 0 auto; }
 .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 16px; }
@@ -62,33 +60,16 @@ html,body {
 .stat-v { font-size: 20px; font-weight: 700; color: var(--accent); }
 .stat-l { font-size: 10px; color: var(--text2); margin-top: 1px; }
 
-.bnav {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
-  background: var(--surface); border-top: 1px solid var(--border);
-  display: flex; padding-bottom: env(safe-area-inset-bottom, 0);
-}
-.bnav-btn {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
-  padding: 8px 4px 10px; border: none; background: transparent;
-  font-size: 10px; font-weight: 600; color: var(--text3); cursor: pointer; font-family: inherit;
-}
+.bnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 99; background: var(--surface); border-top: 1px solid var(--border); display: flex; padding-bottom: env(safe-area-inset-bottom, 0); }
+.bnav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px 10px; border: none; background: transparent; font-size: 10px; font-weight: 600; color: var(--text3); cursor: pointer; font-family: inherit; }
 .bnav-btn .ico { font-size: 22px; line-height: 1; }
 .bnav-btn.on { color: var(--accent); }
 
-.view { display: none; }
-.view.on { display: block; }
+.view { display: none; } .view.on { display: block; }
 
-.team-scroll {
-  display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px;
-  margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
-}
+.team-scroll { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px; margin-bottom: 14px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
 .team-scroll::-webkit-scrollbar { display: none; }
-.tbtn {
-  flex-shrink: 0; padding: 8px 14px; border-radius: var(--r);
-  border: 1.5px solid var(--border); background: var(--surface);
-  font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text2);
-  font-family: inherit; white-space: nowrap;
-}
+.tbtn { flex-shrink: 0; padding: 8px 14px; border-radius: var(--r); border: 1.5px solid var(--border); background: var(--surface); font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text2); font-family: inherit; white-space: nowrap; }
 .tbtn.on { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
 
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--rlg); overflow: hidden; }
@@ -97,11 +78,7 @@ html,body {
 .card-hdr h2 { font-size: 15px; font-weight: 700; }
 .card-hdr p  { font-size: 11px; color: var(--text2); margin-top: 1px; }
 
-.grow {
-  display: grid; grid-template-columns: 38px 1fr 36px 58px;
-  align-items: center; gap: 8px; padding: 11px 14px;
-  border-bottom: 1px solid var(--border);
-}
+.grow { display: grid; grid-template-columns: 38px 1fr 36px 58px; align-items: center; gap: 8px; padding: 11px 14px; border-bottom: 1px solid var(--border); }
 .grow:last-child { border-bottom: none; }
 .rbadge { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); font-size: 11px; padding: 3px 6px; border-radius: 5px; text-align: center; display: block; }
 .opp-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -109,16 +86,9 @@ html,body {
 .rbadge-res { font-size: 11px; font-weight: 700; padding: 3px 6px; border-radius: 5px; background: var(--surface2); color: var(--text3); text-align: center; display: block; }
 .rbadge-res.win  { background: var(--win-bg); color: var(--win); }
 .rbadge-res.loss { background: var(--loss-bg); color: var(--loss); }
-.pts-inp {
-  width: 100%; height: 42px; font-size: 18px; font-weight: 700; text-align: center;
-  background: var(--surface2); border: 1.5px solid var(--border);
-  border-radius: var(--r); color: var(--text); outline: none; font-family: inherit;
-  -moz-appearance: textfield;
-}
-.pts-inp::-webkit-outer-spin-button,
-.pts-inp::-webkit-inner-spin-button { -webkit-appearance: none; }
+.pts-inp { width: 100%; height: 42px; font-size: 18px; font-weight: 700; text-align: center; background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--r); color: var(--text); outline: none; font-family: inherit; -moz-appearance: textfield; }
+.pts-inp::-webkit-outer-spin-button, .pts-inp::-webkit-inner-spin-button { -webkit-appearance: none; }
 .pts-inp:focus { border-color: rgba(181,242,58,0.5); background: #111; }
-.pts-inp.saving { border-color: rgba(181,242,58,0.25); }
 
 .card-foot { padding: 12px 14px; border-top: 1px solid var(--border); background: var(--surface2); display: flex; align-items: center; justify-content: space-between; }
 .foot-lbl { font-size: 13px; color: var(--text2); }
@@ -151,7 +121,7 @@ html,body {
 .sch-list { display: flex; flex-direction: column; gap: 10px; }
 .sch-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--rlg); overflow: hidden; }
 .sch-hdr { display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; background: var(--surface2); border-bottom: 1px solid var(--border); }
-.sch-rnd  { font-size: 13px; font-weight: 700; }
+.sch-rnd { font-size: 13px; font-weight: 700; }
 .sch-time { font-size: 11px; color: var(--accent); }
 .sch-courts { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
 .ct { padding: 10px 12px; }
@@ -180,7 +150,39 @@ html,body {
   </div>
   <div class="hdr-right">
     <div class="hdr-time">6–8 PM</div>
-    <div class="sync-dot" id="sync-dot" title="Sync status"></div>
+    <span class="sync-pill" id="sync-pill">⚡ Setup</span>
+  </div>
+</div>
+
+<!-- SETUP MODAL -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h2>⚡ Connect Live Sync</h2>
+    <p class="modal-sub">Takes 3 minutes. Everyone on the same link will see scores update instantly.</p>
+    <div class="steps">
+      <div class="step">
+        <b>1.</b> Go to <code>console.firebase.google.com</code> → <b>Add project</b> → any name → Continue through setup
+      </div>
+      <div class="step">
+        <b>2.</b> In your project: left sidebar → <b>Realtime Database</b> → <b>Create database</b> → pick any location → <b>Start in test mode</b> → Enable
+      </div>
+      <div class="step">
+        <b>3.</b> Click the <b>⚙️ gear icon</b> top-left → <b>Project settings</b> → scroll to <b>Your apps</b> → click <b>&lt;/&gt;</b> → register with any nickname → you'll see your config. Copy the <code>apiKey</code> and <code>projectId</code> values below.
+      </div>
+    </div>
+    <div class="inp-group">
+      <div>
+        <div class="inp-label">apiKey</div>
+        <input class="cfg-inp" id="cfg-apikey" placeholder='e.g. AIzaSyBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' autocomplete="off" spellcheck="false"/>
+      </div>
+      <div>
+        <div class="inp-label">projectId</div>
+        <input class="cfg-inp" id="cfg-projectid" placeholder='e.g. my-pickleball-abc12' autocomplete="off" spellcheck="false"/>
+      </div>
+    </div>
+    <button class="cfg-btn" id="connect-btn" onclick="saveConfig()">Connect & Start Syncing</button>
+    <div class="err-msg" id="err-msg"></div>
+    <button class="skip-btn" onclick="skipSync()">Skip — use without live sync</button>
   </div>
 </div>
 
@@ -191,32 +193,14 @@ html,body {
     <div class="stat"><div class="stat-v">6</div><div class="stat-l">Per team</div></div>
     <div class="stat"><div class="stat-v">3</div><div class="stat-l">Rest/rnd</div></div>
   </div>
-
   <div class="view on" id="view-scores">
-    <!-- Firebase setup banner — hidden once configured -->
-    <div class="setup-banner" id="setup-banner">
-      <h3>⚡ One-time setup for live sync</h3>
-      <p>To sync scores across all devices, paste your Firebase config below.<br><br>
-        1. Go to <code>console.firebase.google.com</code><br>
-        2. Create a project → Add a web app<br>
-        3. Copy your <code>apiKey</code> and <code>projectId</code> from the config snippet<br>
-        4. Paste them here and tap Save
-      </p>
-      <div class="cfg-form">
-        <input class="cfg-inp" id="cfg-apikey"    placeholder="apiKey"    autocomplete="off" spellcheck="false"/>
-        <input class="cfg-inp" id="cfg-projectid" placeholder="projectId" autocomplete="off" spellcheck="false"/>
-        <button class="cfg-btn" onclick="saveConfig()">Save &amp; Connect</button>
-      </div>
-    </div>
     <div class="team-scroll" id="team-sel"></div>
     <div id="card-wrap"></div>
   </div>
-
   <div class="view" id="view-lb">
     <div class="podium-row" id="lb-pod"></div>
-    <div class="lb-rows"   id="lb-rows"></div>
+    <div class="lb-rows" id="lb-rows"></div>
   </div>
-
   <div class="view" id="view-sch">
     <div class="sch-list" id="sch-rows"></div>
   </div>
@@ -228,12 +212,10 @@ html,body {
   <button class="bnav-btn"    id="bn-sch"    onclick="go('sch')"><span class="ico">📋</span><span>Schedule</span></button>
 </nav>
 
-<!-- Firebase SDKs (loaded from CDN — internet required for sync) -->
 <script type="module">
-import { initializeApp }                       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, set }      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { initializeApp }                  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
 var T = {
   A:{name:"Team A",mem:"AJ & Cheng",        av:"AC",bg:"rgba(56,138,221,.15)", tc:"#5ca3e8"},
   B:{name:"Team B",mem:"Dex & YX",           av:"DY",bg:"rgba(181,242,58,.15)",tc:"#9dc43a"},
@@ -258,85 +240,94 @@ var R = [
   {c1:["A","E"],c2:null,     rest:["B","C","D","F","G"]}
 ];
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
-var SC = {};
-Object.keys(T).forEach(function(t){SC[t]={};});
+var SC = {}; Object.keys(T).forEach(function(t){SC[t]={};});
 var active = "A";
 var db = null;
 var saveTimer = null;
+var isConnected = false;
 
-// ── FIREBASE SETUP ────────────────────────────────────────────────────────────
-function loadConfig() {
-  try { return JSON.parse(localStorage.getItem("pb_cfg")||"null"); } catch(e){ return null; }
-}
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+function loadCfg() { try { return JSON.parse(localStorage.getItem("pb2_cfg")||"null"); } catch(e){ return null; } }
 
-function saveConfig() {
+window.saveConfig = function() {
   var apiKey    = document.getElementById("cfg-apikey").value.trim();
   var projectId = document.getElementById("cfg-projectid").value.trim();
-  if (!apiKey || !projectId) { alert("Please enter both apiKey and projectId"); return; }
-  var cfg = {apiKey:apiKey, projectId:projectId};
-  localStorage.setItem("pb_cfg", JSON.stringify(cfg));
-  connectFirebase(cfg);
-}
-window.saveConfig = saveConfig;
+  var errEl = document.getElementById("err-msg");
+  errEl.textContent = "";
+  if (!apiKey || !projectId) { errEl.textContent = "Please fill in both fields."; return; }
+  if (!apiKey.startsWith("AIza")) { errEl.textContent = "apiKey usually starts with AIza — double check."; return; }
+  document.getElementById("connect-btn").textContent = "Connecting…";
+  localStorage.setItem("pb2_cfg", JSON.stringify({apiKey:apiKey, projectId:projectId}));
+  connectFirebase(apiKey, projectId);
+};
 
-function connectFirebase(cfg) {
+window.skipSync = function() {
+  document.getElementById("modal-bg").classList.add("hidden");
+  setSyncPill("off");
+};
+
+function connectFirebase(apiKey, projectId) {
+  var errEl = document.getElementById("err-msg");
   try {
     var app = initializeApp({
-      apiKey:      cfg.apiKey,
-      authDomain:  cfg.projectId+".firebaseapp.com",
-      databaseURL: "https://"+cfg.projectId+"-default-rtdb.firebaseio.com",
-      projectId:   cfg.projectId,
+      apiKey:      apiKey,
+      authDomain:  projectId + ".firebaseapp.com",
+      databaseURL: "https://" + projectId + "-default-rtdb.firebaseio.com",
+      projectId:   projectId,
+      appId:       "pickleball-app"
     });
     db = getDatabase(app);
-    setSyncDot("ok");
-    document.getElementById("setup-banner").style.display = "none";
 
-    // Listen for any score changes from any device
-    onValue(ref(db,"scores"), function(snap) {
-      var data = snap.val();
-      if (data) {
-        Object.keys(T).forEach(function(tid){
-          if (data[tid]) {
-            Object.keys(data[tid]).forEach(function(rnd){
-              SC[tid][rnd] = data[tid][rnd];
-            });
-          }
+    // Test connection by writing a ping, then listen
+    set(ref(db, "ping"), Date.now())
+      .then(function() {
+        isConnected = true;
+        document.getElementById("modal-bg").classList.add("hidden");
+        setSyncPill("ok");
+        document.getElementById("connect-btn").textContent = "Connect & Start Syncing";
+
+        // Listen for all score changes in real time
+        onValue(ref(db, "scores"), function(snap) {
+          var data = snap.val() || {};
+          Object.keys(T).forEach(function(tid) {
+            SC[tid] = {};
+            if (data[tid]) {
+              Object.keys(data[tid]).forEach(function(rnd) {
+                SC[tid][parseInt(rnd)] = data[tid][rnd];
+              });
+            }
+          });
+          renderCard();
+          if (!document.getElementById("view-lb").classList.contains("on")) return;
+          renderLB();
         });
-      }
-      renderCard();
-      if (document.getElementById("view-lb").classList.contains("on")) renderLB();
-    }, function(err) {
-      setSyncDot("err");
-      console.error(err);
-    });
+      })
+      .catch(function(e) {
+        errEl.textContent = "Could not connect: " + e.message + ". Check your Realtime Database is created and in test mode.";
+        document.getElementById("connect-btn").textContent = "Connect & Start Syncing";
+        console.error(e);
+      });
+
   } catch(e) {
-    setSyncDot("err");
-    alert("Connection failed. Check your apiKey and projectId and try again.");
+    errEl.textContent = "Error: " + e.message;
+    document.getElementById("connect-btn").textContent = "Connect & Start Syncing";
     console.error(e);
   }
 }
 
-function setSyncDot(state) {
-  var d = document.getElementById("sync-dot");
-  d.className = "sync-dot " + state;
-  d.title = state === "ok" ? "Live sync active" : "Sync error";
-}
-
-function pushScores() {
-  if (!db) return;
-  setSyncDot("ok");
-  set(ref(db,"scores"), SC).catch(function(e){
-    setSyncDot("err"); console.error(e);
-  });
+function setSyncPill(state) {
+  var p = document.getElementById("sync-pill");
+  if (state === "ok")  { p.textContent = "🟢 Live";    p.className = "sync-pill ok"; }
+  if (state === "err") { p.textContent = "🔴 Error";   p.className = "sync-pill err"; }
+  if (state === "off") { p.textContent = "⚪ Offline"; p.className = "sync-pill"; }
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function games(tid) {
   var g = [];
   R.forEach(function(r,i){
-    if(r.c1&&r.c1.indexOf(tid)>=0) g.push({rnd:i+1,opp:r.c1[0]===tid?r.c1[1]:r.c1[0],ct:1});
-    else if(r.c2&&r.c2.indexOf(tid)>=0) g.push({rnd:i+1,opp:r.c2[0]===tid?r.c2[1]:r.c2[0],ct:2});
+    if(r.c1&&r.c1.indexOf(tid)>=0) g.push({rnd:i+1, opp:r.c1[0]===tid?r.c1[1]:r.c1[0]});
+    else if(r.c2&&r.c2.indexOf(tid)>=0) g.push({rnd:i+1, opp:r.c2[0]===tid?r.c2[1]:r.c2[0]});
   });
   return g;
 }
@@ -344,8 +335,7 @@ function games(tid) {
 function result(tid,rnd,opp) {
   var m=SC[tid][rnd], o=SC[opp][rnd];
   if(m===undefined||m===""||m===null||o===undefined||o===""||o===null) return "";
-  m=parseInt(m); o=parseInt(o);
-  return m>o?"W":m<o?"L":"D";
+  return parseInt(m)>parseInt(o)?"W":parseInt(m)<parseInt(o)?"L":"D";
 }
 
 function stats(tid) {
@@ -359,47 +349,60 @@ function stats(tid) {
 }
 
 // ── SCORE ENTRY ───────────────────────────────────────────────────────────────
-window.setScore = function(tid,rnd,val) {
-  var n=parseInt(val);
-  SC[tid][rnd]=(isNaN(n)||val==="")?"":Math.min(15,Math.max(0,n));
-  // Update totals in place
-  var st=stats(tid);
-  var tp=document.querySelector(".total-pts");
-  var ts=document.querySelector(".total-sub");
-  if(tp) tp.textContent=st.pts;
-  if(ts) ts.textContent=st.wins+" win"+(st.wins!==1?"s":"")+" \u00b7 "+st.played+"/6 entered";
-  // Update result badge in place
-  var gx=games(tid).filter(function(x){return x.rnd===rnd;})[0];
-  var rel=document.getElementById("res-"+tid+"-"+rnd);
+window.setScore = function(tid, rnd, val) {
+  var n = parseInt(val);
+  SC[tid][rnd] = (isNaN(n)||val==="") ? "" : Math.min(15,Math.max(0,n));
+  // Update UI in place (no full re-render so cursor stays)
+  var st = stats(tid);
+  var tp = document.querySelector(".total-pts");
+  var ts = document.querySelector(".total-sub");
+  if(tp) tp.textContent = st.pts;
+  if(ts) ts.textContent = st.wins+" win"+(st.wins!==1?"s":"")+" \u00b7 "+st.played+"/6 entered";
+  var gx = games(tid).filter(function(x){return x.rnd===rnd;})[0];
+  var rel = document.getElementById("res-"+tid+"-"+rnd);
   if(rel&&gx){
-    var res=result(tid,rnd,gx.opp);
-    rel.textContent=res||"–";
-    rel.className="rbadge-res"+(res==="W"?" win":res==="L"?" loss":"");
+    var res = result(tid,rnd,gx.opp);
+    rel.textContent = res||"–";
+    rel.className = "rbadge-res"+(res==="W"?" win":res==="L"?" loss":"");
   }
-  // Debounce push to Firebase
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(function(){ pushScores(); }, 800);
+  // Push to Firebase with debounce
+  if (isConnected) {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      // Sanitise: Firebase doesn't accept undefined or empty string as value — use null
+      var toSave = {};
+      Object.keys(T).forEach(function(t){
+        toSave[t] = {};
+        Object.keys(SC[t]).forEach(function(r){
+          var v = SC[t][r];
+          if(v!==undefined && v!=="") toSave[t][r] = parseInt(v);
+        });
+      });
+      set(ref(db,"scores"), toSave).catch(function(e){
+        setSyncPill("err"); console.error("Save failed",e);
+      });
+    }, 600);
+  }
 };
 
-// ── VIEWS ─────────────────────────────────────────────────────────────────────
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
 window.go = function(v) {
   ["scores","lb","sch"].forEach(function(id){
-    document.getElementById("view-"+id).className="view"+(id===v?" on":"");
-    document.getElementById("bn-"+id).className="bnav-btn"+(id===v?" on":"");
+    document.getElementById("view-"+id).className = "view"+(id===v?" on":"");
+    document.getElementById("bn-"+id).className   = "bnav-btn"+(id===v?" on":"");
   });
   if(v==="lb") renderLB();
 };
 
-window.pick = function(tid) {
-  active=tid; buildSel(); renderCard();
-};
+window.pick = function(tid) { active=tid; buildSel(); renderCard(); };
 
+// ── RENDER ────────────────────────────────────────────────────────────────────
 function buildSel() {
-  var html="";
+  var h="";
   Object.keys(T).forEach(function(tid){
-    html+='<button class="tbtn'+(tid===active?" on":"")+'" onclick="pick(\''+tid+'\')">'+T[tid].name+'</button>';
+    h+='<button class="tbtn'+(tid===active?" on":"")+'" onclick="pick(\''+tid+'\')">'+T[tid].name+'</button>';
   });
-  document.getElementById("team-sel").innerHTML=html;
+  document.getElementById("team-sel").innerHTML=h;
 }
 
 function renderCard() {
@@ -431,16 +434,14 @@ function renderCard() {
 
 function renderLB() {
   var rows=Object.keys(T).map(function(tid){
-    var st=stats(tid);return{tid:tid,pts:st.pts,wins:st.wins,played:st.played};
+    var st=stats(tid); return{tid:tid,pts:st.pts,wins:st.wins,played:st.played};
   }).sort(function(a,b){return b.pts-a.pts||b.wins-a.wins;});
   var medals=["🥇","🥈","🥉"],ph="";
   rows.slice(0,3).forEach(function(r,i){
     var t=T[r.tid];
     ph+='<div class="pod'+(i===0?" p1":"")+'">'
-      +'<div class="pod-medal">'+medals[i]+'</div>'
-      +'<div class="pod-name">'+t.name+'</div>'
-      +'<div class="pod-mem">'+t.mem+'</div>'
-      +'<div class="pod-pts">'+r.pts+'</div>'
+      +'<div class="pod-medal">'+medals[i]+'</div><div class="pod-name">'+t.name+'</div>'
+      +'<div class="pod-mem">'+t.mem+'</div><div class="pod-pts">'+r.pts+'</div>'
       +'<div class="pod-lbl">pts</div></div>';
   });
   document.getElementById("lb-pod").innerHTML=ph;
@@ -460,15 +461,12 @@ function renderLB() {
 }
 
 function buildSch() {
-  var sm=18*60;
-  var fmt=function(m){return("0"+Math.floor(m/60)).slice(-2)+":"+("0"+(m%60)).slice(-2);};
+  var sm=18*60, fmt=function(m){return("0"+Math.floor(m/60)).slice(-2)+":"+("0"+(m%60)).slice(-2);};
   var html="";
   R.forEach(function(r,i){
     var t=sm+i*10;
     var c2h=r.c2
-      ?'<div class="ct-team-name">'+T[r.c2[0]].name+'</div><div class="ct-team-mem">'+T[r.c2[0]].mem+'</div>'
-       +'<div class="ct-vs">vs</div>'
-       +'<div class="ct-team-name">'+T[r.c2[1]].name+'</div><div class="ct-team-mem">'+T[r.c2[1]].mem+'</div>'
+      ?'<div class="ct-team-name">'+T[r.c2[0]].name+'</div><div class="ct-team-mem">'+T[r.c2[0]].mem+'</div><div class="ct-vs">vs</div><div class="ct-team-name">'+T[r.c2[1]].name+'</div><div class="ct-team-mem">'+T[r.c2[1]].mem+'</div>'
       :'<div class="ct-empty">Not in use</div>';
     var chips=r.rest.map(function(tid){
       return'<div class="rchip"><div class="rchip-name">'+T[tid].name+'</div><div class="rchip-mem">'+T[tid].mem+'</div></div>';
@@ -476,11 +474,7 @@ function buildSch() {
     html+='<div class="sch-card">'
       +'<div class="sch-hdr"><span class="sch-rnd">Round '+(i+1)+'</span><span class="sch-time">'+fmt(t)+' – '+fmt(t+10)+'</span></div>'
       +'<div class="sch-courts">'
-      +'<div class="ct"><div class="ct-lbl">Court 1</div>'
-      +'<div class="ct-team-name">'+T[r.c1[0]].name+'</div><div class="ct-team-mem">'+T[r.c1[0]].mem+'</div>'
-      +'<div class="ct-vs">vs</div>'
-      +'<div class="ct-team-name">'+T[r.c1[1]].name+'</div><div class="ct-team-mem">'+T[r.c1[1]].mem+'</div>'
-      +'</div>'
+      +'<div class="ct"><div class="ct-lbl">Court 1</div><div class="ct-team-name">'+T[r.c1[0]].name+'</div><div class="ct-team-mem">'+T[r.c1[0]].mem+'</div><div class="ct-vs">vs</div><div class="ct-team-name">'+T[r.c1[1]].name+'</div><div class="ct-team-mem">'+T[r.c1[1]].mem+'</div></div>'
       +'<div class="ct"'+(r.c2?'':' style="opacity:.4"')+'><div class="ct-lbl">Court 2</div>'+c2h+'</div>'
       +'</div>'
       +'<div class="sch-rest"><div class="rest-lbl">Resting</div><div class="rest-chips">'+chips+'</div></div>'
@@ -490,15 +484,16 @@ function buildSch() {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-buildSel();
-renderCard();
-buildSch();
+buildSel(); renderCard(); buildSch();
 
-var cfg = loadConfig();
-if (cfg) {
+var cfg = loadCfg();
+if (cfg && cfg.apiKey && cfg.projectId) {
   document.getElementById("cfg-apikey").value    = cfg.apiKey;
   document.getElementById("cfg-projectid").value = cfg.projectId;
-  connectFirebase(cfg);
+  connectFirebase(cfg.apiKey, cfg.projectId);
+} else {
+  // Show setup modal on first visit
+  setSyncPill("off");
 }
 </script>
 </body>
