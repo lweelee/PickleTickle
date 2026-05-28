@@ -486,15 +486,13 @@ function buildSch() {
 // ── INIT ──────────────────────────────────────────────────────────────────────
 buildSel(); renderCard(); buildSch();
 
-var cfg = loadCfg();
-if (cfg && cfg.apiKey && cfg.projectId) {
-  document.getElementById("cfg-apikey").value    = cfg.apiKey;
-  document.getElementById("cfg-projectid").value = cfg.projectId;
-  connectFirebase(cfg.apiKey, cfg.projectId);
-} else {
-  // Show setup modal on first visit
-  setSyncPill("off");
-}
+connectFirebase(
+  "AIzaSyCIOewQkD5mQQ5xO-QB237J7bA1XPWzDDM",
+  "ticklepickle-42de5"
+);
+
+  document.getElementById("modal-bg").classList.add("hidden");
+  
 </script>
 </body>
 </html>
