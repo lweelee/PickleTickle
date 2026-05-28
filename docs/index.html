@@ -270,12 +270,12 @@ function connectFirebase(apiKey, projectId) {
   var errEl = document.getElementById("err-msg");
   try {
     var app = initializeApp({
-      apiKey:      apiKey,
-      authDomain:  projectId + ".firebaseapp.com",
-      databaseURL: "https://ticklepickle-42de5-default-rtdb.asia-southeast1.firebasedatabase.app/",
-      projectId:   projectId,
-      appId:       "pickleball-app"
-    });
+  apiKey: "AIzaSyCIOewQkD5mQQ5xO-QB237J7bA1XPWzDDM",
+  authDomain: "ticklepickle-42de5.firebaseapp.com",
+  databaseURL: "https://ticklepickle-42de5-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "ticklepickle-42de5",
+  appId: "pickleball-app"
+});
     db = getDatabase(app);
 
     // Test connection by writing a ping, then listen
